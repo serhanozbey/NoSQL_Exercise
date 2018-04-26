@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * Unit test for simple App.
+ * Unit test for simple KindDao.
  */
-public class AppTest 
+public class KindDaoTest
 {
     /**
      * Rigorous Test :-)

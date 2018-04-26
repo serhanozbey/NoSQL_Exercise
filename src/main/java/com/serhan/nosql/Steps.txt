@@ -1,0 +1,43 @@
+Creating first app connecting to google cloud database.
+
+STEPS
+
+1. Sign up and enable API
+ https://cloud.google.com/datastore/docs/activate#service_account
+
+2. Add credentials for db admin and download json file and set a authentication at code.
+
+3. Added Google Cloud Datastore API Maven dependency
+
+<dependency>
+  <groupId>com.google.cloud</groupId>
+  <artifactId>google-cloud-datastore</artifactId>
+  <version>1.27.0</version>
+</dependency>
+
+4. Added Objectify, Java data access API specifically designed for the Google Cloud Datastore
+
+https://cloud.google.com/datastore/docs/reference/libraries
+
+https://github.com/objectify/objectify
+
+<dependency>
+    <groupId>com.googlecode.objectify</groupId>
+    <artifactId>objectify</artifactId>
+    <version>RELEASE</version>
+</dependency>
+
+=================================================
+
+Links:
+https://stackoverflow.com/questions/20015464/can-i-use-googles-datastore-for-a-desktop-application
+
+https://github.com/GoogleCloudPlatform/google-cloud-java#authentication
+
+-Entities, Properties, and Keys
+https://cloud.google.com/appengine/docs/standard/java/datastore/entities
+
+-Creating, Retrieving, Updating, and Deleting Entities
+https://cloud.google.com/appengine/docs/standard/java/datastore/creating-entities
+
+

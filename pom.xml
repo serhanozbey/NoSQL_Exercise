@@ -27,11 +27,23 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-datastore -->
-    <dependency>
-        <groupId>com.google.cloud</groupId>
-        <artifactId>google-cloud-datastore</artifactId>
-        <version>1.27.0</version>
-    </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-datastore</artifactId>
+            <version>1.27.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.objectify</groupId>
+            <artifactId>objectify</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-database</artifactId>
+            <version>RELEASE</version>
+        </dependency>
 
     </dependencies>
 
