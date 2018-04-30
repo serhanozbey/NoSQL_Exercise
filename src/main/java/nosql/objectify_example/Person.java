@@ -1,6 +1,5 @@
-package com.serhan.nosql.objectify_example;
+package nosql.objectify_example;
 
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.*;
 
 @Entity

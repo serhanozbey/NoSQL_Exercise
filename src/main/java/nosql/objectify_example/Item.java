@@ -1,8 +1,7 @@
-package com.serhan.nosql.objectify_example;
+package nosql.objectify_example;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
 
 @Entity
 public class Item {

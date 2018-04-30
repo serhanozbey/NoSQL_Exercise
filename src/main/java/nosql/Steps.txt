@@ -1,3 +1,7 @@
+https://www.quora.com/Why-should-I-learn-NoSQL
+
+https://www.developer.com/java/data/getting-started-with-mongodb-as-a-java-nosql-solution.html
+
 Creating first app connecting to google cloud database.
 
 STEPS
@@ -29,7 +33,7 @@ https://github.com/objectify/objectify
 
 =================================================
 
-Links:
+Important Links:
 https://stackoverflow.com/questions/20015464/can-i-use-googles-datastore-for-a-desktop-application
 
 https://github.com/GoogleCloudPlatform/google-cloud-java#authentication

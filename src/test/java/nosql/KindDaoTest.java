@@ -1,4 +1,4 @@
-package com.serhan.nosql;
+package nosql;
 
 import static org.junit.Assert.assertTrue;
 

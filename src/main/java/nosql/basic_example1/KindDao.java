@@ -1,4 +1,4 @@
-package com.serhan.nosql.basic_example1;
+package nosql.basic_example1;
 
 
 /*https://stackoverflow.com/questions/20015464/can-i-use-googles-datastore-for-a-desktop-application*/
@@ -8,7 +8,6 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.*;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Iterator;
 
 public class KindDao {
