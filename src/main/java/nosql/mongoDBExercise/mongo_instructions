@@ -1,0 +1,36 @@
+1 - install mongodb community server
+! assign a windows service to mongodb start
+! create the environment
+
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/#manually-create-a-windows-service-for-mongodb-community-edition
+
+2- install mongodb compass
+
+3- maven dependencies:
+
+<dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongo-java-driver</artifactId>
+    <version>3.6.3</version>
+</dependency>
+
+4- http://mongodb.github.io/mongo-java-driver/3.4/driver/tutorials/perform-write-operations/
+
+5- https://www.youtube.com/watch?v=khLaOfy6BCE
+
+optional - Mongo odm https://www.infoq.com/articles/mongodb-java-orm-bcd
+
+6- Using Morphia
+http://mongodb.github.io/morphia/1.3/guides/annotations/#embedded
+http://www.thejavageek.com/2015/08/24/save-entity-using-morphia/
+
+<dependency>
+            <groupId>org.mongodb.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+7- Using unique index for names:
+https://docs.mongodb.com/manual/core/index-unique/
+
+8- Morphia @Annotations.

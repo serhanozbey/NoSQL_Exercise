@@ -1,3 +1,5 @@
+Steps for Google Cloud Datastore and Objectify.
+
 https://www.quora.com/Why-should-I-learn-NoSQL
 
 https://www.developer.com/java/data/getting-started-with-mongodb-as-a-java-nosql-solution.html
