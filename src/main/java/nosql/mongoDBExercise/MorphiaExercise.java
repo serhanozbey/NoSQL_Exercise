@@ -9,10 +9,9 @@ import java.util.Iterator;
 
 public class MorphiaExercise {
     
-    static private final MongoClientURI mongoURI = new MongoClientURI("mongodb://localhost:27017");
-    static private Morphia morphia;
-    static private Datastore datastore;
-    
+    public static final MongoClientURI mongoURI = new MongoClientURI("mongodb://localhost:27017");
+    public static Morphia morphia;
+    public static Datastore datastore;
     public static void main(String[] args) {
 
         setupMorphia();
@@ -46,5 +45,16 @@ public class MorphiaExercise {
             System.out.println(it.next());
         }
     }
-    
+
+    public static MongoClientURI getMongoURI() {
+        return mongoURI;
+    }
+
+    public static Morphia getMorphia() {
+        return morphia;
+    }
+
+    public static Datastore getDatastore() {
+        return datastore;
+    }
 }
