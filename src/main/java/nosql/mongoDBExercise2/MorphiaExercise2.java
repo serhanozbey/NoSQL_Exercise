@@ -1,37 +1,40 @@
-package nosql.mongoDBExercise;
+package nosql.mongoDBExercise2;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import nosql.mongoDBExercise.MorphiaExercise;
+import nosql.mongoDBExercise.User;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import java.util.Iterator;
 
-public class MorphiaExercise {
-    
+/*Referencing example, creating addressBook and referencing to the only ID of the other Users.*/
+
+public class MorphiaExercise2 {
+
     static private final MongoClientURI mongoURI = new MongoClientURI("mongodb://localhost:27017");
     static private Morphia morphia;
     static private Datastore datastore;
-    
+
     public static void main(String[] args) {
 
         setupMorphia();
-        
+
+
+        UserEntry userEntry1 = new UserEntry("serhan", "krakow");
+        UserEntry userEntry2 = new UserEntry("yunus", "warsaw");
+
+        datastore.save(userEntry2);
+        userEntry1.addAddressBook(userEntry2);
+
+        System.out.println(userEntry1);
+
+
+        datastore.save(userEntry1);
+
         printDocs();
-        
-        User user = new User("Deniz Can", "ul.Dmochowskiego 6/6 Warszawa");
-        
-        
-        user.addAddressBook(new User("dana","krakow"));
-        datastore.save(user);
-        
-        System.out.println("after write");
-        printDocs();
-    
-        
-        System.out.println(datastore.get(user).toString());
-        
-        
+
     }
 
     public static void setupMorphia() {
@@ -40,11 +43,14 @@ public class MorphiaExercise {
         morphia.mapPackage("nosql.mongoDBExercise");
     }
 
-    public static void printDocs() {
-        Iterator it = datastore.getDB().getCollection("user").find();
+    private static void printDocs() {
+
+        Iterator it = datastore.getDB().getCollection("addressEntries").find();
         while (it.hasNext()) {
             System.out.println(it.next());
         }
+
     }
-    
+
+
 }
