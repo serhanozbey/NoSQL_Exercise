@@ -1,5 +1,6 @@
 package nosql.mongoDBExercise3;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -7,7 +8,7 @@ import org.mongodb.morphia.annotations.Id;
 public class User {
 
     @Id
-    protected String id;
+    protected ObjectId id;
     protected String username;
     protected String email;
     
@@ -15,6 +16,7 @@ public class User {
     }
     
     public User(String username, String email) {
+        this.id = new ObjectId();
         this.username = username;
         this.email = email;
     }

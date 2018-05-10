@@ -31,7 +31,7 @@ public class UserEntry {
         this.address = address;
         this.addressBook = new ArrayList<>();
         System.out.println("UserEntry{" +
-                "id=" + id +
+                "userId=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", addressBook=" + addressBook +
@@ -83,7 +83,7 @@ public class UserEntry {
     public String toString() {
         
         return "UserEntry{" +
-                "id=" + id +
+                "userId=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", addressBook=" + addressBook +

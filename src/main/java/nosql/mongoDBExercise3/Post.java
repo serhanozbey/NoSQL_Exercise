@@ -9,10 +9,10 @@ import org.mongodb.morphia.annotations.Id;
 public class Post {
  
     @Id
-    protected String id;
+    protected ObjectId id;
     protected String body;
     protected String author;
-    protected String uid;
+    protected ObjectId uid;
     
     public Post() {
     }
@@ -24,6 +24,7 @@ public class Post {
         this.uid = uid;
     }*/
     public Post(User user, String body) {
+        this.id = new ObjectId();
         this.author = user.username;
         this.uid = user.id;
         this.body = body;

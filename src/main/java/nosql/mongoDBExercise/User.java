@@ -60,7 +60,7 @@ public class User{
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "userId=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", addressBook=" + addressBook +
