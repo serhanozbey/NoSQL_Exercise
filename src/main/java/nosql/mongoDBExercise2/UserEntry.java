@@ -1,6 +1,5 @@
 package nosql.mongoDBExercise2;
 
-import com.sun.istack.internal.NotNull;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.*;
 import org.mongodb.morphia.utils.IndexDirection;
@@ -17,7 +16,6 @@ public class UserEntry {
     protected ObjectId id;
     //FIXME: unique not working
     @Indexed(options = @IndexOptions(unique = true))
-    @NotNull
     protected String name;
     private String address;
     @Reference(idOnly = true)
