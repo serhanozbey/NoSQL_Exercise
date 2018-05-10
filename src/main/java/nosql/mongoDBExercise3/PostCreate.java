@@ -2,6 +2,7 @@ package nosql.mongoDBExercise3;
 
 import com.mongodb.*;
 import com.mongodb.operation.UpdateOperation;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.InsertOptions;
 import org.mongodb.morphia.Morphia;
@@ -32,27 +33,48 @@ public class PostCreate {
             user.id = datastore.find(User.class).field("username").equal("deniz").get().id;
         }
         
-        //TODO: change with User.username
-        //TODO: change with User.getId
+        //saving to admin.posts
         Post post = new Post(user, "melabaa");
-        
         datastore.save(post);
-    
+        
+        //saving to admin.user-posts
         Query<UserPost> currentUserPost = datastore.find(UserPost.class, "_id", user.id).disableValidation();
-        UserPost userPost = currentUserPost.get();
-    
+        //creating with checking if theres already userPost existing
+        UserPost userPost;
+        if (currentUserPost != null) {
+            userPost = currentUserPost.get();
+        } else {
+            userPost = new UserPost(post);
+            
+        }
+        
         userPost.addPost(post);
         UpdateOperations ops = datastore
                 .createUpdateOperations(UserPost.class)
                 .addToSet("posts", post);
-        datastore.update(currentUserPost, ops,true);
-    
-    
+        datastore.update(currentUserPost, ops, true);
         
-        /*Comment comment = new Comment(post, user,"sanada selamlar denuz");
+        //saving post comments
+        post = datastore.find(Post.class, "id", new ObjectId("5af45904dad2243dd434245c")).get();
         
-        datastore.save(comment);
-        */
+        Comment comment = new Comment(user, "sanada melaba");
+    
+        Query<PostComments> currentPostComments = datastore.find(PostComments.class, "_id", post.id).disableValidation();
+        
+        PostComments pc;
+    
+        if (currentPostComments.get() != null) {
+            pc = currentPostComments.get();
+        } else {
+            pc = new PostComments(post,comment);
+        }
+    
+        pc.addComment(comment);
+        UpdateOperations ops2 = datastore
+                .createUpdateOperations(PostComments.class)
+                .addToSet("comments", comment);
+        datastore.update(currentPostComments, ops2, true);
+        
     }
     
 }

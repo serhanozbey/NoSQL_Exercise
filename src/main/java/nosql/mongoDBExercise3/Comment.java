@@ -18,6 +18,7 @@ public class Comment {
     }
     
     public Comment(User commentingUser, String comment) {
+        this.postId = new ObjectId();
         this.userId = commentingUser.id;
         this.author = commentingUser.username;
         this.text = comment;
