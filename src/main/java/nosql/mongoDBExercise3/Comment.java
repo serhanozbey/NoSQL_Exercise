@@ -23,4 +23,9 @@ public class Comment {
         this.author = commentingUser.username;
         this.text = comment;
     }
+    
+    @Override
+    public String toString() {
+        return text;
+    }
 }

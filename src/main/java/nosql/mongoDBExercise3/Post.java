@@ -29,4 +29,11 @@ public class Post {
         this.uid = user.id;
         this.body = body;
     }
+    
+    @Override
+    public String toString() {
+        return body + "\t-from: " + author;
+    }
+    
+    
 }

@@ -29,4 +29,10 @@ public class PostComments {
         comments.add(comment);
     }
     
+    @Override
+    public String toString() {
+        return "PostComments{" +
+                "comments=" + comments +
+                '}';
+    }
 }
