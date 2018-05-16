@@ -11,6 +11,9 @@ public class Main {
     private static User user;
     private static Scanner scanner = new Scanner(System.in);
     
+    //TODO: Change the command pattern (state pattern?)
+    //TODO: CLI program lifecycle
+    
     static {
         System.out.println("Welcome to the NoSQL user-post-comment");
         command = new ViewNull();
@@ -25,12 +28,14 @@ public class Main {
     
     private static void mainMenu() throws InputMismatchException {
         if(user==null) start();
-        System.out.println("Select an operation: ");
+        System.out.println("\nSelect an operation: ");
         System.out.println("1- View Posts");
         System.out.println("2- View Posts and Comments");
         System.out.println("3- View Account");
-        System.out.println("4- Logout");
+        System.out.println("4- New Post");
+        System.out.println("5- Logout");
     
+        //TODO: Input snippet
         int selection;
         while (true) {
             scanner = new Scanner(System.in);
@@ -52,6 +57,9 @@ public class Main {
                 setCommand(new ViewAccount());
                 break;
             case 4:
+                setCommand(new ViewNewPost());
+                break;
+            case 5:
                 user = null;
                 break;
         }

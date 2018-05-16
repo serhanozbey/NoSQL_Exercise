@@ -13,6 +13,7 @@ import java.util.Scanner;
 /*Database configured with added index of unique username*/
 public class Dao {
     
+    //TODO: singleton for Morphia and MongoClient.
     private static MongoClientURI mongoURI;
     private static Morphia morphia;
     private static Datastore datastore;
@@ -64,6 +65,7 @@ public class Dao {
         System.out.println("Enter post");
         Post post = new Post(user, scanner.nextLine());
         datastore.save(post);
+        saveUserPost(user,post);
         return post;
     }
     
@@ -108,7 +110,7 @@ public class Dao {
                 .addToSet("comments", comment);
         datastore.update(currentPostComments, ops2, true);
     
-        System.out.println("Post saved successfully.\n");
+        System.out.println("Comment saved successfully.\n");
     }
     
     public static void printAllPosts() {
