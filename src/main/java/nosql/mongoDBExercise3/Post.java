@@ -32,7 +32,7 @@ public class Post {
     
     @Override
     public String toString() {
-        return body + "\t-from: " + author;
+        return body + "\n-from: " + author +"------------\n";
     }
     
     

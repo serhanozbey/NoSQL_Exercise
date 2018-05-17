@@ -15,19 +15,22 @@ public class Main {
     //TODO: CLI program lifecycle
     
     static {
-        System.out.println("Welcome to the NoSQL user-post-comment");
         command = new ViewNull();
     }
     
     public static void main(String[] args) {
-        start();
+        
         while (true) {
             mainMenu();
         }
     }
     
     private static void mainMenu() throws InputMismatchException {
-        if(user==null) start();
+        System.out.println("Welcome to the NoSQL user-post-comment");
+        if (user==null&&!login()) {
+            return;
+        }
+        System.out.println("\nMAIN MENU\n");
         System.out.println("\nSelect an operation: ");
         System.out.println("1- View Posts");
         System.out.println("2- View Posts and Comments");
@@ -66,9 +69,22 @@ public class Main {
         command.execute();
     }
     
-    private static void start() {
-        user = Dao.saveOrGetUser();
-        mainMenu();
+    private static boolean login() {
+        System.out.println("\nLOGIN MENU");
+        user = Dao.loadUser();
+        if (user == null) {
+            System.out.println("User not found. Register? (y/n)");
+            Scanner scanner = new Scanner(System.in);
+            String selection = scanner.nextLine();
+            if (selection.equals("y")) {
+                Dao.registerUser();
+            } else {
+                System.out.println("Registration aborted.");
+            }
+            return false;
+        } else {
+            return true;
+        }
     }
     
     public static void setCommand(View command) {

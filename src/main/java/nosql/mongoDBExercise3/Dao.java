@@ -1,6 +1,8 @@
 package nosql.mongoDBExercise3;
 
 import com.mongodb.*;
+import nosql.mongoDBExercise3.util.PassHasher;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -18,13 +20,13 @@ public class Dao {
     private static Morphia morphia;
     private static Datastore datastore;
     
-    static{
+    static {
         setupConnection();
     }
     
     public static void main(String[] args) {
         
-        User user = saveOrGetUser();
+        User user = loadUser();
         
         //saving to admin.posts
         Post post = savePost(user);
@@ -65,28 +67,52 @@ public class Dao {
         System.out.println("Enter post");
         Post post = new Post(user, scanner.nextLine());
         datastore.save(post);
-        saveUserPost(user,post);
+        saveUserPost(user, post);
         return post;
     }
     
-    public static User saveOrGetUser() {
+    //TODO: seperate the methods.
+    public static User loadUser() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username name");
+        System.out.println("\nEnter username");
         String username = scanner.nextLine();
-        System.out.println("Enter email");
-        String email = scanner.nextLine();
-        User user = new User(username,email);
-        //FIXME: Creating object first, then checking database for duplicates. Should query first.
-        try {
-            datastore.save(user);
-            System.out.println("Registered as: "+user.username);
-        } catch (DuplicateKeyException e) {
-            //if exists, gets and assigns proper userId to user.
-            System.out.println("Logged in as: "+user.username);
-            user = datastore.find(User.class).field("username").equal(username).get();
+        Query<User> q = datastore.find(User.class);
+        if (q.field("username").equal(username).count() != 0) {
+            System.out.println("Enter password");
+            String pass = scanner.nextLine();
+            String stored_hash = q.project("password", true).get().password;
+            if (PassHasher.checkPassword(pass, stored_hash)) {
+                return datastore.find(User.class).field("username").equal(username).get();
+            }
         }
-        return user;
+        return null;
     }
+    
+    public static User registerUser() {
+        User userNew;
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Enter username");
+                String user = scanner.nextLine();
+                System.out.println("Enter password");
+                String pass = scanner.nextLine().trim();
+                System.out.println("Enter email");
+                String email = scanner.nextLine();
+                if(!EmailValidator.getInstance().isValid(email)) throw new Exception();
+                userNew = new User(user, pass, email);
+                break;
+            } catch (Exception e) {
+                System.out.println("wrong input, try again");
+            }
+        }
+        datastore.save(userNew);
+        System.out.println("Successfully registered.");
+        
+        return userNew;
+    }
+    
+
     
     public static void savePostComment(User user, Post post) {
         Scanner scanner = new Scanner(System.in);
@@ -109,14 +135,14 @@ public class Dao {
                 .createUpdateOperations(PostComments.class)
                 .addToSet("comments", comment);
         datastore.update(currentPostComments, ops2, true);
-    
+        
         System.out.println("Comment saved successfully.\n");
     }
     
     public static void printAllPosts() {
-        List<DBObject> list= datastore.getDB().getCollection("posts").find().toArray();
+        List<DBObject> list = datastore.getDB().getCollection("posts").find().toArray();
         for (int i = 0; i < list.size(); i++) {
-            System.out.println( i+1 + ": " + morphia.fromDBObject(datastore, Post.class, list.get(i)));
+            System.out.println(i + 1 + ": " + morphia.fromDBObject(datastore, Post.class, list.get(i)));
         }
     }
     
@@ -125,15 +151,15 @@ public class Dao {
     }
     
     public static void printAllPostsAndComments() {
-        List<DBObject> postsList= datastore.getDB().getCollection("posts").find().toArray();
+        List<DBObject> postsList = datastore.getDB().getCollection("posts").find().toArray();
         for (int i = 0; i < postsList.size(); i++) {
             Post post = morphia.fromDBObject(datastore, Post.class, postsList.get(i));
-            System.out.println( (i+1) + ": " + post);
-    
+            System.out.println((i + 1) + ": " + post);
+            
             PostComments postComments = datastore.find(PostComments.class).disableValidation().field("_id").equal(post.id).get();
             if (postComments != null) {
                 for (int a = 0; a < postComments.comments.size(); a++) {
-                    System.out.println("\t"+(a+1)+": "+postComments.comments.get(a));
+                    System.out.println("\t" + (a + 1) + ": " + postComments.comments.get(a));
                 }
             }
             System.out.println();
