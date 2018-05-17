@@ -8,7 +8,7 @@ public class ViewPosts implements View {
     public void execute() {
         System.out.println("Enter the post number if you want to comment.");
         Dao.printAllPosts();
-        System.out.println("To quit, press escape");
+        System.out.println("To quit, press escape\n");
         
     }
 }
