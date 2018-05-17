@@ -117,6 +117,7 @@ public class Dao {
     public static void savePostComment(User user, Post post) {
         Scanner scanner = new Scanner(System.in);
         post = datastore.find(Post.class, "id", new ObjectId(post.id.toHexString())).get();
+        System.out.println("HEREEE"+ post);
         System.out.println("Enter first comment to your post");
         Comment comment = new Comment(user, scanner.nextLine());
         
@@ -128,6 +129,7 @@ public class Dao {
             pc = currentPostComments.get();
         } else {
             pc = new PostComments(post, comment);
+            datastore.save(pc);
         }
         
         pc.addComment(comment);
