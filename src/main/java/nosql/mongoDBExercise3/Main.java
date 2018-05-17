@@ -19,19 +19,18 @@ public class Main {
     }
     
     public static void main(String[] args) {
-        
         while (true) {
+            System.out.println("Welcome to the NoSQL user-post-comment");
             mainMenu();
         }
     }
     
     private static void mainMenu() throws InputMismatchException {
-        System.out.println("Welcome to the NoSQL user-post-comment");
         if (user==null&&!login()) {
             return;
         }
         System.out.println("\nMAIN MENU\n");
-        System.out.println("\nSelect an operation: ");
+        System.out.println("Select an operation: ");
         System.out.println("1- View Posts");
         System.out.println("2- View Posts and Comments");
         System.out.println("3- View Account");

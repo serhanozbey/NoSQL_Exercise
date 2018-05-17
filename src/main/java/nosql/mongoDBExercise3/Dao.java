@@ -117,8 +117,7 @@ public class Dao {
     public static void savePostComment(User user, Post post) {
         Scanner scanner = new Scanner(System.in);
         post = datastore.find(Post.class, "id", new ObjectId(post.id.toHexString())).get();
-        System.out.println("HEREEE"+ post);
-        System.out.println("Enter first comment to your post");
+        System.out.println("\nEnter first comment to your post");
         Comment comment = new Comment(user, scanner.nextLine());
         
         Query<PostComments> currentPostComments = datastore.find(PostComments.class, "_id", post.id).disableValidation();
