@@ -21,7 +21,7 @@ public class MorphiaExercise2 {
     public static void main(String[] args) {
         
         morphia = new Morphia();
-        datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "admin");
+        datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "exercise2");
         
         UserEntry userEntry1 = new UserEntry("serhan", "krakow");
         UserEntry userEntry2 = new UserEntry("yunus", "warsaw");

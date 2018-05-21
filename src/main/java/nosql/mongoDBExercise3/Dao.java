@@ -24,24 +24,10 @@ public class Dao {
         setupConnection();
     }
     
-    public static void main(String[] args) {
-        
-        User user = loadUser();
-        
-        //saving to admin.posts
-        Post post = savePost(user);
-        //saving to admin.user-posts
-        saveUserPost(user, post);
-        
-        //saving post comments
-        savePostComment(user, post);
-        
-    }
-    
     public static void setupConnection() {
         mongoURI = new MongoClientURI("mongodb://localhost:27017");
         morphia = new Morphia();
-        datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "admin");
+        datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "exercise3");
         morphia.mapPackage("nosql.mongoDBExercise3");
     }
     

@@ -23,7 +23,7 @@ public class MorphiaQuery {
     
     public static void main(String[] args) {
         morphia = new Morphia();
-        datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "admin");
+        datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "exercise2");
         
         getSequentialIterator();
         

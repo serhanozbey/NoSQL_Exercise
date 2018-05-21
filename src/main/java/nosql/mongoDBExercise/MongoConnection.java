@@ -18,7 +18,7 @@ public class MongoConnection {
         MongoClientURI mongoURI = new MongoClientURI("mongodb://localhost:27017");
         
         MongoClient mongoClient = new MongoClient(mongoURI);
-        MongoDatabase db = mongoClient.getDatabase("admin");
+        MongoDatabase db = mongoClient.getDatabase("exercise1");
         
         MongoCollection<Document> users = db.getCollection("user");
         
