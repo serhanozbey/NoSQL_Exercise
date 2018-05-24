@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity(value = "post-comments",noClassnameStored = true)
 public class PostComments {
-    
+//TODO: To be removed
     @Id
     protected ObjectId postId;
     public String postBody;

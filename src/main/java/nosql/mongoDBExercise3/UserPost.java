@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity(value = "user-posts",noClassnameStored = true)
 public class UserPost {
-    
+//TODO: To be removed.
     @Id
     protected ObjectId userId;
     @Embedded

@@ -31,6 +31,7 @@ public class Dao {
         morphia.mapPackage("nosql.mongoDBExercise3");
     }
     
+    //TODO: Should be removed, childupdate should be done only at savePost with Post.class.
     public static void saveUserPost(User user, Post post) {
         Query<UserPost> currentUserPost = datastore.find(UserPost.class, "_id", user.id).disableValidation();
         //creating with checking if theres already posts of that user existing
@@ -98,7 +99,8 @@ public class Dao {
         return userNew;
     }
     
-
+    
+    //TODO: Should be replaced by saveComment, childupdate should be done only with Comment.class.
     
     public static void savePostComment(User user, Post post) {
         Scanner scanner = new Scanner(System.in);
