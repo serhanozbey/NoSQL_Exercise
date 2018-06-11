@@ -60,6 +60,17 @@
             <artifactId>commons-validator</artifactId>
             <version>RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.firebase:firebase-firestore:17.0.1</groupId>
+            <artifactId>RELEASE</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
