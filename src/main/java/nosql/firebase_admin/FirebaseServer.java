@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 //just download the service account json inside the project and you're ready to go.
@@ -30,21 +31,36 @@ public class FirebaseServer {
     
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         FileInputStream serviceAccount =
-                new FileInputStream(".....json");
+                new FileInputStream("...../-firebase-adminsdk-trfke-6412dfe59c.json");
     
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl(".....")
+                .setDatabaseUrl("https://...com")
                 .build();
     
         
         FirebaseApp.initializeApp(options);
         mFirestore = FirestoreClient.getFirestore();
-        DocumentReference users = mFirestore.collection("posts").document("9FhJYNQ9nBuo6gHmWYji");
-    
-        ApiFuture<DocumentSnapshot> future = users.get();
         
-        System.out.println(future.get().getData());
+        //retrieving all of the documents inside the collection.
+        
+        CollectionReference users = mFirestore.collection("posts");
+    
+        QuerySnapshot snapshots = users.get().get();
+    
+        Iterator<QueryDocumentSnapshot> it = snapshots.iterator();
+    
+        while (it.hasNext()) {
+            System.out.println(it.next().getData());
+        }
+        
+        //retrieving single document
+        
+        /*DocumentReference user = mFirestore.collection("posts").document("9FhJYNQ9nBuo6gHmWYji");
+        
+        ApiFuture<DocumentSnapshot> future = user.get();
+        
+        System.out.println(future.get().getData());*/
     }
     
     
