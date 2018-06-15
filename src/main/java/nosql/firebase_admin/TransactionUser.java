@@ -17,7 +17,7 @@ public class TransactionUser {
     public TransactionUser(String name, String email) {
         this.name = name;
         this.email = email;
-        counter = 0;
+        counter = 1;
     }
     
     public String getName() {
@@ -42,5 +42,10 @@ public class TransactionUser {
     
     public void setCounter(int counter) {
         this.counter = counter;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
     }
 }

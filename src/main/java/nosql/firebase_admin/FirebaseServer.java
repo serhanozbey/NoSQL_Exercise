@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.database.DataSnapshot;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,20 +32,34 @@ public class FirebaseServer {
     private static DocumentReference mRef;
     
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException, FirebaseAuthException {
+        
+        //TODO: FIRESTORE AND AUTH SETUP
         FileInputStream serviceAccount =
-                new FileInputStream("...");
+                new FileInputStream("");
     
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("...")
+                .setDatabaseUrl("https://.firebaseio.com")
                 .build();
     
         
         FirebaseApp.initializeApp(options);
         mFirestore = FirestoreClient.getFirestore();
-        mUser = FirebaseAuth.getInstance().getUser("66VJ5VWmmAfoAXFyVXhmMjD1rLl2");
-        //retrieving all of the documents inside the collection.
+    
         
+        //TODO: READ A DOCUMENT IN COLLECTION
+        /*DocumentReference user = mFirestore.collection("posts").document("9FhJYNQ9nBuo6gHmWYji");
+        
+        ApiFuture<DocumentSnapshot> future = user.get();
+        
+        System.out.println(future.get().getData());*/
+    
+        
+        
+        //TODO: READ ALL DOCUMENTS IN COLLECTION
+        mUser = FirebaseAuth.getInstance().getUser("66VJ5VWmmAfoAXFyVXhmMjD1rLl2");
+        System.out.println(mUser.getDisplayName());
+    
         CollectionReference users = mFirestore.collection("posts");
     
         QuerySnapshot snapshots = users.get().get();
@@ -55,15 +70,17 @@ public class FirebaseServer {
             System.out.println(it.next().getData());
         }
     
-        //TODO: retrieve a single document
         
-        /*DocumentReference user = mFirestore.collection("posts").document("9FhJYNQ9nBuo6gHmWYji");
+        //TODO: TRANSACTIONS
+        //TODO: Perform a transaction. with rollback and logging. 1st is some fields of document, 2nd is setting or updating fields of an Object.
         
-        ApiFuture<DocumentSnapshot> future = user.get();
+        // IMPORTANT INFORMATION RELATED TO TRANSACTIONS
         
-        System.out.println(future.get().getData());*/
+        /*The transaction contains read operations after write operations. Read operations must always come before any write operations.
+The transaction read a document that was modified outside of the transaction. In this case, the transaction automatically runs again. The transaction is retried a finite number of times.
+A failed transaction returns an error and does not write anything to the database. You do not need to roll back the transaction; Cloud Firestore does this automatically.*/
         
-        //TODO: Perform a transaction. with rollback and logging. 1 Random fields, 2 An Object.
+        /*WARNING: Do not modify application state inside of your transaction functions. Doing so will introduce concurrency issues, because transaction functions can run multiple times and are not guaranteed to run on the UI thread. */
         
         
         //TRANSACTION, WITHOUT OBJECT, SOME FIELDS
@@ -97,7 +114,7 @@ public class FirebaseServer {
                 
                 map.put("name", coname.concat("oglu"));
                 map.put("email", conemail.concat(String.valueOf(counter)));
-                map.put("counter", ++counter);
+                map.put("counter", counter++);
                 transaction.update(pushRef,map);
                 return null;
             }
@@ -127,9 +144,46 @@ public class FirebaseServer {
         transaction2.get();
     
     
-        //TODO: Perform a batched write.
+        //TODO: BATCHED WRITE
+    
+        /*If you do not need to read any documents in your operation set, you can execute multiple write operations as a single batch that contains any combination of set(), update(), or delete() operations. A batch of writes completes atomically and can write to multiple documents.*/
+    
+        /*Batched writes are also useful for migrating large data sets to Cloud Firestore. A batched write can contain up to 500 operations and batching operations together reduces connection overhead resulting in faster data migration.*/
+    
         
+        WriteBatch batch = mFirestore.batch();
+    
+        CollectionReference firstRef = mFirestore.collection("batchedExercise1");
+    
+        DocumentReference docRef1 = firstRef.document();
+    
+        DocumentReference docRef2 = firstRef.document();
+    
+        DocumentReference docRef3 = firstRef.document();
+    
+        TransactionUser user1 = new TransactionUser("serhan", "serhan@gmail.com");
         
+        TransactionUser user2 = new TransactionUser("dede", "dede@gmail.com");
+    
+        TransactionUser user3 = new TransactionUser("mama", "mama@gmail.com");
+        
+        batch.set(docRef1, user1);
+    
+        batch.set(docRef2, user2);
+        
+        batch.update(docRef1, "name", "SerhanBatchUpdated");
+    
+        batch.update(docRef2, "name", "DedeBatchUpdated", "email", user2.getEmail().split("@")[0]);
+    
+        if (docRef3.get().get().exists()) {
+            batch.set(docRef3, user3);
+            System.out.println(user3 + "is added.");
+        }else{
+            batch.delete(docRef3);
+            System.out.println(user3 + "is deleted");
+        }
+    
+        System.out.println(batch.commit());
        
     }
     
