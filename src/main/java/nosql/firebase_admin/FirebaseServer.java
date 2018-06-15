@@ -32,7 +32,7 @@ public class FirebaseServer {
     
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException, FirebaseAuthException {
         FileInputStream serviceAccount =
-                new FileInputStream("/..");
+                new FileInputStream("...");
     
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -67,7 +67,7 @@ public class FirebaseServer {
         
         
         //TRANSACTION, WITHOUT OBJECT, SOME FIELDS
-        DocumentReference pushRef = mFirestore.collection("transactionPractise").document("ChQueQ0fMkiPLUUeGXyD");
+        DocumentReference pushRef = mFirestore.collection("transactionExercise1").document("ChQueQ0fMkiPLUUeGXyD");
         
         ApiFuture<Void> transaction = mFirestore.runTransaction(new Transaction.Function<Void>() {
             @Override
@@ -84,6 +84,7 @@ public class FirebaseServer {
                     map.put("email", email.split("@")[0]);
                     map.put("counter", 1);
                     transaction.set(pushRef, map);
+                    System.out.println("user details created.");
                     return null;
                 } else {
                     counter = snapshot.getLong("counter");
@@ -105,19 +106,28 @@ public class FirebaseServer {
         
         //TRANSACTION WITH OBJECT (VALIDATION PROPERTIES)
     
-       /* DocumentReference objectRef = mFirestore.collection("transactionPractise").document("exercise2").collection("")
+        DocumentReference objectRef = mFirestore.collection("transactionExercise2").document("ChQueQ0fMkiPLUUeGXyD");
         
         ApiFuture<Void> transaction2 = mFirestore.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void updateCallback(Transaction transaction) throws Exception {
-                
+                DocumentSnapshot snapshot = transaction.get(objectRef).get();
+                TransactionUser user = new TransactionUser("dede", "dede@dede.com");
+                if (snapshot.getData()==null) {
+                    transaction.set(objectRef, user);
+                    System.out.println("object created.");
+                }else{
+                    System.out.println("data exists");
+                    System.out.println(transaction.update(objectRef, "name", String.valueOf(snapshot.get("name")).concat(String.valueOf((int) (Math.random() * 10))), "email", String.valueOf(snapshot.get("email")).split("@")[0], "counter", snapshot.getLong("counter") + 1L));
+                    
+                }
                 return null;
             }
         });
         transaction2.get();
     
     
-        //TODO: Perform a batched write.*/
+        //TODO: Perform a batched write.
         
         
        
