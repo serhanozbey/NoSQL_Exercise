@@ -9,13 +9,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.database.DataSnapshot;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 //just download the service account json inside the project and you're ready to go.
@@ -28,48 +26,20 @@ public class FirebaseServer {
     
     private static Firestore mFirestore;
     private static UserRecord mUser;
-    private static ListenerRegistration mReg;
-    private static DocumentReference mRef;
     
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException, FirebaseAuthException {
         
         //TODO: FIRESTORE AND AUTH SETUP
-        FileInputStream serviceAccount =
-                new FileInputStream("");
-    
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://.firebaseio.com")
-                .build();
-    
-        
-        FirebaseApp.initializeApp(options);
-        mFirestore = FirestoreClient.getFirestore();
-    
+        setup();
+        System.out.println();
         
         //TODO: READ A DOCUMENT IN COLLECTION
-        /*DocumentReference user = mFirestore.collection("posts").document("9FhJYNQ9nBuo6gHmWYji");
-        
-        ApiFuture<DocumentSnapshot> future = user.get();
-        
-        System.out.println(future.get().getData());*/
-    
-        
+        readSingleDocument();
+        System.out.println();
         
         //TODO: READ ALL DOCUMENTS IN COLLECTION
-        mUser = FirebaseAuth.getInstance().getUser("66VJ5VWmmAfoAXFyVXhmMjD1rLl2");
-        System.out.println(mUser.getDisplayName());
-    
-        CollectionReference users = mFirestore.collection("posts");
-    
-        QuerySnapshot snapshots = users.get().get();
-    
-        Iterator<QueryDocumentSnapshot> it = snapshots.iterator();
-    
-        while (it.hasNext()) {
-            System.out.println(it.next().getData());
-        }
-    
+        readCollectionDocuments();
+        System.out.println();
         
         //TODO: TRANSACTIONS
         //TODO: Perform a transaction. with rollback and logging. 1st is some fields of document, 2nd is setting or updating fields of an Object.
@@ -84,6 +54,82 @@ A failed transaction returns an error and does not write anything to the databas
         
         
         //TRANSACTION, WITHOUT OBJECT, SOME FIELDS
+        transactionField();
+        System.out.println();
+        //TRANSACTION WITH OBJECT (VALIDATION PROPERTIES)
+        
+        transactionObject();
+        System.out.println();
+        
+        //TODO: BATCHED WRITE
+        
+        /*If you do not need to read any documents in your operation set, you can execute multiple write operations as a single batch that contains any combination of set(), update(), or delete() operations. A batch of writes completes atomically and can write to multiple documents.*/
+        
+        /*Batched writes are also useful for migrating large data sets to Cloud Firestore. A batched write can contain up to 500 operations and batching operations together reduces connection overhead resulting in faster data migration.*/
+        
+        //WRITING USERS IF THEY DON'T EXIST AT THE COLLECTIONS.
+        batchedWrites();
+        System.out.println();
+        
+        //TODO: READ AN OBJECT IN COLLECTION
+        batchedWriteQuery();
+        System.out.println();
+        
+        //UPDATING THE EDITED TIME
+        batchedWriteUpdates();
+        System.out.println();
+        
+    }
+    
+    
+    private static void setup() throws IOException, FirebaseAuthException {
+        System.out.println("FirebaseServer.setup");
+        FileInputStream serviceAccount =
+                new FileInputStream("..");
+        
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("..")
+                .build();
+        System.out.println("Getting user auth");
+        
+        FirebaseApp.initializeApp(options);
+        mFirestore = FirestoreClient.getFirestore();
+        
+        mUser = FirebaseAuth.getInstance().getUser("66VJ5VWmmAfoAXFyVXhmMjD1rLl2");
+        System.out.println(mUser.getDisplayName());
+    }
+    
+    private static void readSingleDocument() throws InterruptedException, ExecutionException {
+        System.out.println("FirebaseServer.readSingleDocument");
+        System.out.println("Reading a specific FPNetwork post");
+        DocumentReference user = mFirestore.collection("posts").document("9FhJYNQ9nBuo6gHmWYji");
+        
+        ApiFuture<DocumentSnapshot> future = user.get();
+        
+        System.out.println(future.get().getData());
+    }
+    
+    private static void readCollectionDocuments() throws FirebaseAuthException, InterruptedException, ExecutionException {
+        System.out.println("FirebaseServer.readCollectionDocuments");
+        System.out.println("Reading all FPNetwork posts");
+        
+        
+        CollectionReference users = mFirestore.collection("posts");
+        
+        QuerySnapshot snapshots = users.get().get();
+        
+        Iterator<QueryDocumentSnapshot> it = snapshots.iterator();
+        
+        while (it.hasNext()) {
+            System.out.println(it.next().getData());
+        }
+    }
+    
+    private static void transactionField() throws InterruptedException, ExecutionException {
+        System.out.println("FirebaseServer.transactionField");
+        
+        System.out.println("Working on hardcoded single document");
         DocumentReference pushRef = mFirestore.collection("transactionExercise1").document("ChQueQ0fMkiPLUUeGXyD");
         
         ApiFuture<Void> transaction = mFirestore.runTransaction(new Transaction.Function<Void>() {
@@ -91,10 +137,10 @@ A failed transaction returns an error and does not write anything to the databas
             public Void updateCallback(Transaction transaction) throws Exception {
                 DocumentSnapshot snapshot = transaction.get(pushRef).get();
                 //these fields are not validated, but when we work with objects, it will be easier to validate
-                long counter=0;
+                long counter = 0;
                 Map<String, Object> map = new HashMap<>();
                 //if doesn't exist, create and quit (transaction)
-                if (snapshot.getData()==null) {
+                if (snapshot.getData() == null) {
                     String name = mUser.getDisplayName();
                     String email = mUser.getEmail();
                     map.put("name", name.split(" ")[0]);
@@ -104,25 +150,29 @@ A failed transaction returns an error and does not write anything to the databas
                     System.out.println("user details created.");
                     return null;
                 } else {
+                    //if exists, retrieve counter.
                     counter = snapshot.getLong("counter");
                 }
                 
                 //update with transaction, if ANY DATA AT DOCUMENT exists
-                System.out.println(counter);
+                System.out.println("Counter: " + counter);
                 String coname = snapshot.get("name").toString();
                 String conemail = snapshot.get("email").toString();
                 
+                System.out.println("concatenating name and email with database transaction update");
                 map.put("name", coname.concat("oglu"));
                 map.put("email", conemail.concat(String.valueOf(counter)));
                 map.put("counter", counter++);
-                transaction.update(pushRef,map);
+                transaction.update(pushRef, map);
                 return null;
             }
         });
         transaction.get();
-        
-        //TRANSACTION WITH OBJECT (VALIDATION PROPERTIES)
+    }
     
+    private static void transactionObject() throws InterruptedException, ExecutionException {
+        System.out.println("FirebaseServer.transactionObject");
+        System.out.println("Working on hardcoded single document");
         DocumentReference objectRef = mFirestore.collection("transactionExercise2").document("ChQueQ0fMkiPLUUeGXyD");
         
         ApiFuture<Void> transaction2 = mFirestore.runTransaction(new Transaction.Function<Void>() {
@@ -130,64 +180,101 @@ A failed transaction returns an error and does not write anything to the databas
             public Void updateCallback(Transaction transaction) throws Exception {
                 DocumentSnapshot snapshot = transaction.get(objectRef).get();
                 TransactionUser user = new TransactionUser("dede", "dede@dede.com");
-                if (snapshot.getData()==null) {
+                if (snapshot.getData() == null) {
                     transaction.set(objectRef, user);
                     System.out.println("object created.");
-                }else{
+                } else {
                     System.out.println("data exists");
-                    System.out.println(transaction.update(objectRef, "name", String.valueOf(snapshot.get("name")).concat(String.valueOf((int) (Math.random() * 10))), "email", String.valueOf(snapshot.get("email")).split("@")[0], "counter", snapshot.getLong("counter") + 1L));
+                    transaction.update(objectRef, "name", String.valueOf(snapshot.get("name")).concat(String.valueOf((int) (Math.random() * 10))), "email", String.valueOf(snapshot.get("email")).split("@")[0], "counter", snapshot.getLong("counter") + 1L);
                     
                 }
                 return null;
             }
         });
         transaction2.get();
+    }
     
-    
-        //TODO: BATCHED WRITE
-    
-        /*If you do not need to read any documents in your operation set, you can execute multiple write operations as a single batch that contains any combination of set(), update(), or delete() operations. A batch of writes completes atomically and can write to multiple documents.*/
-    
-        /*Batched writes are also useful for migrating large data sets to Cloud Firestore. A batched write can contain up to 500 operations and batching operations together reduces connection overhead resulting in faster data migration.*/
-    
-        
+    private static void batchedWrites() throws InterruptedException, ExecutionException {
+        System.out.println("FirebaseServer.batchedWrites");
+        System.out.println("Writing 3 documents ");
         WriteBatch batch = mFirestore.batch();
-    
+        
         CollectionReference firstRef = mFirestore.collection("batchedExercise1");
-    
-        DocumentReference docRef1 = firstRef.document();
-    
-        DocumentReference docRef2 = firstRef.document();
-    
-        DocumentReference docRef3 = firstRef.document();
-    
+        
         TransactionUser user1 = new TransactionUser("serhan", "serhan@gmail.com");
         
         TransactionUser user2 = new TransactionUser("dede", "dede@gmail.com");
-    
+        
         TransactionUser user3 = new TransactionUser("mama", "mama@gmail.com");
         
-        batch.set(docRef1, user1);
-    
-        batch.set(docRef2, user2);
         
-        batch.update(docRef1, "name", "SerhanBatchUpdated");
-    
-        batch.update(docRef2, "name", "DedeBatchUpdated", "email", user2.getEmail().split("@")[0]);
-    
-        if (docRef3.get().get().exists()) {
-            batch.set(docRef3, user3);
-            System.out.println(user3 + "is added.");
-        }else{
-            batch.delete(docRef3);
-            System.out.println(user3 + "is deleted");
+        //checking database if created user exists, if not created and pushed to database
+        List<TransactionUser> userList = new ArrayList<>();
+        userList.add(user1);
+        userList.add(user2);
+        userList.add(user3);
+        Iterator<TransactionUser> it = userList.listIterator();
+        
+        while (it.hasNext()) {
+            TransactionUser user = it.next();
+            List<TransactionUser> transactionUsers = firstRef.get().get().toObjects(TransactionUser.class);
+            if (transactionUsers.contains(user)) {
+                System.out.println("User already exists");
+            } else {
+                System.out.println("User written: " + user);
+                batch.set(firstRef.document(), user);
+            }
         }
-    
-        System.out.println(batch.commit());
-       
+        batch.commit();
     }
     
+    private static void batchedWriteQuery() throws ExecutionException, InterruptedException {
+        System.out.println("FirebaseServer.batchedWriteQuery");
+        System.out.println("Querying data with name value");
+        CollectionReference docRef = mFirestore.collection("batchedExercise1");
+        Query q = docRef.whereEqualTo("name", "serhan").limit(1);
+        
+        QuerySnapshot querySnapshot = q.get().get();
+        DocumentSnapshot document = querySnapshot.iterator().next();
+        // asynchronously retrieve the document
+        // ...
+        // future.get() blocks on response
+        if (document.exists()) {
+            System.out.println("Document data: " + document.getData());
+        } else {
+            System.out.println("No such document!");
+        }
+    }
     
-    
-    
+    private static void batchedWriteUpdates() throws ExecutionException, InterruptedException {
+        System.out.println("FirebaseServer.batchedWriteUpdates");
+        System.out.println("Updating 3 documents");
+        
+        CollectionReference ref = mFirestore.collection("batchedExercise1");
+        
+        ListIterator<QueryDocumentSnapshot> itList = ref.get().get().getDocuments().listIterator();
+        
+        WriteBatch batch = mFirestore.batch();
+        
+        while (itList.hasNext()) {
+            QueryDocumentSnapshot snapshot = itList.next();
+            TransactionUser user = snapshot.toObject(TransactionUser.class);
+            System.out.println("Writing to user: " + user.toString());
+            String path = snapshot.getId();
+            System.out.println(path);
+            batch.update(ref.document(path), "name", user.getName());
+            batch.update(ref.document(path), "counter", user.getCounter() + 1L);
+            //if already exists, insert edit time, if not, created time.
+            if (snapshot.contains("createdAt")) {
+                System.out.println("Creation time: " + snapshot.getData().get("createdAt"));
+            }
+            //adding current time date as it's edited.
+            Map<String, Object> map = new HashMap<>();
+            String now = String.valueOf(Instant.now());
+            map.put("editedAt", now);
+            System.out.println(now);
+            batch.set(ref.document(path), map, SetOptions.merge());
+        }
+        batch.commit();
+    }
 }
