@@ -81,7 +81,6 @@ A failed transaction returns an error and does not write anything to the databas
         
     }
     
-    
     private static void setup() throws IOException, FirebaseAuthException {
         System.out.println("FirebaseServer.setup");
         FileInputStream serviceAccount =

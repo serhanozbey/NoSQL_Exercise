@@ -1,4 +1,4 @@
-package nosql.mongoDBExercise3;
+package nosql.mongoDBExercise3.model;
 
 
 import org.bson.types.ObjectId;
@@ -9,10 +9,10 @@ import org.mongodb.morphia.annotations.Id;
 public class Post {
  
     @Id
-    protected ObjectId id;
-    protected String body;
-    protected String author;
-    protected ObjectId uid;
+    private ObjectId id;
+    private String body;
+    private String author;
+    private ObjectId uid;
     
     public Post() {
     }
@@ -30,10 +30,31 @@ public class Post {
         this.body = body;
     }
     
+    public ObjectId getId() {
+        return id;
+    }
+    
+    public String getBody() {
+        return body;
+    }
+    
+    public void setBody(String body) {
+        this.body = body;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public ObjectId getUid() {
+        return uid;
+    }
+    
     @Override
     public String toString() {
         return body + "\n-from: " + author +"------------\n";
     }
+    
     
     
 }

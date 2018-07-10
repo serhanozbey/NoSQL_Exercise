@@ -1,7 +1,6 @@
-package nosql.mongoDBExercise3;
+package nosql.mongoDBExercise3.model;
 
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 

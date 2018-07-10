@@ -1,8 +1,11 @@
 package nosql.mongoDBExercise3.commands;
 
-import nosql.mongoDBExercise3.Dao;
-import nosql.mongoDBExercise3.Main;
-import nosql.mongoDBExercise3.Post;
+import nosql.mongoDBExercise3.controller.Main;
+import nosql.mongoDBExercise3.model.Comment;
+import nosql.mongoDBExercise3.model.Post;
+import nosql.mongoDBExercise3.util.CommentUtil;
+import nosql.mongoDBExercise3.util.MorphiaUtil;
+import nosql.mongoDBExercise3.util.PostUtil;
 
 import java.util.Scanner;
 
@@ -21,8 +24,8 @@ public class ViewAddComment implements View {
                 String sel = scanner.nextLine();
                 if (sel.equals("=")) return;
                 selection = Integer.valueOf(sel);
-                Dao.printAllPosts();
-                Dao.savePostComment(Main.getUser(), Dao.getMorphia().fromDBObject(Dao.getDatastore(), Post.class, Dao.getAllPosts().get(selection - 1)));
+                PostUtil.printAllPosts();
+                CommentUtil.saveComment(Main.getMain().getUser(), MorphiaUtil.getInstance().getMorphia().fromDBObject(MorphiaUtil.getInstance().getDatastore(), Post.class, PostUtil.getAllPosts().get(selection - 1)));
                 isAdded = true;
                 break;
             } catch (Exception ex) {

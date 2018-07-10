@@ -1,4 +1,4 @@
-package nosql.mongoDBExercise3;
+package nosql.mongoDBExercise3.model;
 
 import nosql.mongoDBExercise3.util.PassHasher;
 import org.bson.types.ObjectId;
@@ -11,11 +11,11 @@ import org.mongodb.morphia.annotations.Indexed;
 public class User {
 
     @Id
-    protected ObjectId id;
+    public ObjectId id;
     @Indexed( options = @IndexOptions(unique = true))
-    protected String username;
-    protected String password;
-    protected String email;
+    public String username;
+    public String password;
+    public String email;
     
     public User() {
     }

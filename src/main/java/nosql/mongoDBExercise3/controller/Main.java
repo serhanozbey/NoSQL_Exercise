@@ -1,31 +1,37 @@
-package nosql.mongoDBExercise3;
+package nosql.mongoDBExercise3.controller;
 
 import nosql.mongoDBExercise3.commands.*;
+import nosql.mongoDBExercise3.util.UserUtil;
+import nosql.mongoDBExercise3.model.User;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     
-    private static View command;
-    private static User user;
-    private static Scanner scanner = new Scanner(System.in);
+    private View command;
+    private User user;
+    //singleton constructor start.
+    private static Main main = new Main();
     
-    //TODO: Change the command pattern (state pattern?)
-    //TODO: CLI program lifecycle
-    
-    static {
+    private Main() {
         command = new ViewNull();
     }
     
+    public static Main getMain() {
+        return main;
+    }
+    //singleton constructor end.
+    
     public static void main(String[] args) {
+        Main CLI = getMain();
         while (true) {
             System.out.println("Welcome to the NoSQL user-post-comment");
-            mainMenu();
+            CLI.mainMenu();
         }
     }
     
-    private static void mainMenu() throws InputMismatchException {
+    private void mainMenu() throws InputMismatchException {
         if (user==null&&!login()) {
             return;
         }
@@ -40,7 +46,7 @@ public class Main {
         //TODO: Input snippet
         int selection;
         while (true) {
-            scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             try {
                 selection = scanner.nextInt();
                 break;
@@ -68,15 +74,15 @@ public class Main {
         command.execute();
     }
     
-    private static boolean login() {
+    private boolean login() {
         System.out.println("\nLOGIN MENU");
-        user = Dao.loadUser();
+        user = UserUtil.login();
         if (user == null) {
             System.out.println("User not found. Register? (y/n)");
             Scanner scanner = new Scanner(System.in);
             String selection = scanner.nextLine();
             if (selection.equals("y")) {
-                Dao.registerUser();
+                UserUtil.register();
             } else {
                 System.out.println("Registration aborted.");
             }
@@ -86,11 +92,11 @@ public class Main {
         }
     }
     
-    public static void setCommand(View command) {
-        Main.command = command;
+    public void setCommand(View command) {
+        this.command = command;
     }
     
-    public static User getUser() {
+    public User getUser() {
         return user;
     }
 }

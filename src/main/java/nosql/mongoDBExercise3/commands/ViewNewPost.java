@@ -1,11 +1,11 @@
 package nosql.mongoDBExercise3.commands;
 
-import nosql.mongoDBExercise3.Dao;
-import nosql.mongoDBExercise3.Main;
+import nosql.mongoDBExercise3.controller.Main;
+import nosql.mongoDBExercise3.util.PostUtil;
 
 public class ViewNewPost implements View {
     @Override
     public void execute() {
-        Dao.savePost(Main.getUser());
+        PostUtil.savePost(Main.getMain().getUser());
     }
 }

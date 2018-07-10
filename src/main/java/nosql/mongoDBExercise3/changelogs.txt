@@ -1,0 +1,16 @@
+1.0.0 CLI User - Post - Comment - mongoDB
+
+-New repository for mongoDBExercise3
+
+-Recreating Dao interface and implementations- UserDao, PostDao, CommentDao
+
+-Change Main CLI as classloader initialized ready singleton
+
+-Creating MorphiaUtil (a heavy configuration class) as lazy initialization for multithreading.
+(first initialization takes a bit time.)
+
+-TODO: Add logs for commands
+
+-Added Util classes, but should be changed to something else. (like commands)
+
+-TODO: Create login date dumps of logins to database.

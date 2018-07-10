@@ -1,11 +1,7 @@
 package nosql.mongoDBExercise3.commands;
 
-import nosql.mongoDBExercise3.Dao;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.util.Scanner;
+import nosql.mongoDBExercise3.util.PostUtil;
+import nosql.mongoDBExercise3.util.UserUtil;
 
 public class ViewPosts implements View {
     
@@ -13,7 +9,7 @@ public class ViewPosts implements View {
     public void execute() {
         while (true) {
             System.out.println("Enter the post number if you want to comment.");
-            Dao.printAllPosts();
+            PostUtil.printAllPosts();
             ViewAddComment view = new ViewAddComment();
             view.execute();
             if (!view.isAdded()) break;

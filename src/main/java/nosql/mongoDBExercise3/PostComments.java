@@ -1,10 +1,11 @@
 package nosql.mongoDBExercise3;
 
+import nosql.mongoDBExercise3.model.Comment;
+import nosql.mongoDBExercise3.model.Post;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Property;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +14,18 @@ import java.util.List;
 public class PostComments {
 //TODO: To be removed
     @Id
-    protected ObjectId postId;
-    public String postBody;
+    private ObjectId postId;
+    private String postBody;
     @Embedded
-    protected List<Comment> comments;
+    private List<Comment> comments;
     
     public PostComments() {
     }
     
     public PostComments(Post postToComment, Comment comment) {
         comments = new ArrayList<>();
-        this.postId = postToComment.id;
-        this.postBody = postToComment.body;
+        this.postId = postToComment.getId();
+        this.postBody = postToComment.getBody();
         this.comments.add(comment);
     }
     
@@ -37,5 +38,29 @@ public class PostComments {
         return "PostComments{" +
                 "comments=" + comments +
                 '}';
+    }
+    
+    public ObjectId getPostId() {
+        return postId;
+    }
+    
+    public void setPostId(ObjectId postId) {
+        this.postId = postId;
+    }
+    
+    public String getPostBody() {
+        return postBody;
+    }
+    
+    public void setPostBody(String postBody) {
+        this.postBody = postBody;
+    }
+    
+    public List<Comment> getComments() {
+        return comments;
+    }
+    
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
