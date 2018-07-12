@@ -1,15 +1,15 @@
-package nosql.mongoDBExercise3;
+package nosql.mongoDBExercise3.model;
 
-import nosql.mongoDBExercise3.model.Post;
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.*;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(value = "user-posts",noClassnameStored = true)
 public class UserPost {
-//TODO: To be removed.
     @Id
     private ObjectId userId;
     @Embedded

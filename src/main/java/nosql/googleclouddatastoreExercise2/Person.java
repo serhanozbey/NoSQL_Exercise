@@ -1,4 +1,4 @@
-package nosql.objectify_example;
+package nosql.googleclouddatastoreExercise2;
 
 import com.googlecode.objectify.annotation.*;
 

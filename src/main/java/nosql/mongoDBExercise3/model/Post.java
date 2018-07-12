@@ -17,13 +17,7 @@ public class Post {
     public Post() {
     }
     
-    //TODO: Change with Post(User user, String body) and assign author name and uid later on from User object.
-    /*public Post(String author, String body, ObjectId uid) {
-        this.author = author;
-        this.body = body;
-        this.uid = uid;
-    }*/
-    public Post(User user, String body) {
+        public Post(User user, String body) {
         this.id = new ObjectId();
         this.author = user.username;
         this.uid = user.id;

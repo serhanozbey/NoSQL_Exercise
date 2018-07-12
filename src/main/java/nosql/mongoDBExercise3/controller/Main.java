@@ -1,13 +1,15 @@
 package nosql.mongoDBExercise3.controller;
 
 import nosql.mongoDBExercise3.commands.*;
-import nosql.mongoDBExercise3.util.UserUtil;
 import nosql.mongoDBExercise3.model.User;
+import nosql.mongoDBExercise3.util.UserUtil;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    
+    //TODO: create scanner method, argument with what it says, and says enter sth according to that. if = is entered, returns null for quit.
     
     private View command;
     private User user;
@@ -43,7 +45,7 @@ public class Main {
         System.out.println("4- New Post");
         System.out.println("5- Logout");
     
-        //TODO: Input snippet
+        //TODO: Better Input snippet to be generated.
         int selection;
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -69,7 +71,7 @@ public class Main {
                 break;
             case 5:
                 user = null;
-                break;
+                return;
         }
         command.execute();
     }
@@ -78,9 +80,7 @@ public class Main {
         System.out.println("\nLOGIN MENU");
         user = UserUtil.login();
         if (user == null) {
-            System.out.println("User not found. Register? (y/n)");
-            Scanner scanner = new Scanner(System.in);
-            String selection = scanner.nextLine();
+            String selection = getScanner("User not found. Register? (y/n)");
             if (selection.equals("y")) {
                 UserUtil.register();
             } else {
@@ -98,5 +98,12 @@ public class Main {
     
     public User getUser() {
         return user;
+    }
+    
+    public String getScanner(String message){
+        System.out.println(message);
+        String input = new Scanner(System.in).nextLine();
+        if(input.equals("=")) return null;
+        return input;
     }
 }

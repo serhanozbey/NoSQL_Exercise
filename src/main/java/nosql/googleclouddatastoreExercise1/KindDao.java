@@ -1,4 +1,4 @@
-package nosql.basic_example1;
+package nosql.googleclouddatastoreExercise1;
 
 
 /*https://stackoverflow.com/questions/20015464/can-i-use-googles-datastore-for-a-desktop-application*/

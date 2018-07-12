@@ -8,10 +8,10 @@ import org.mongodb.morphia.annotations.Id;
 public class Comment {
     
     @Id
-    protected ObjectId postId;
-    protected String author;
-    protected String text;
-    protected ObjectId userId;
+    private ObjectId postId;
+    private String author;
+    private String text;
+    private ObjectId userId;
     
     public Comment() {
     }
@@ -21,6 +21,38 @@ public class Comment {
         this.userId = commentingUser.id;
         this.author = commentingUser.username;
         this.text = comment;
+    }
+    
+    public ObjectId getPostId() {
+        return postId;
+    }
+    
+    public void setPostId(ObjectId postId) {
+        this.postId = postId;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+    
+    public String getText() {
+        return text;
+    }
+    
+    public void setText(String text) {
+        this.text = text;
+    }
+    
+    public ObjectId getUserId() {
+        return userId;
+    }
+    
+    public void setUserId(ObjectId userId) {
+        this.userId = userId;
     }
     
     @Override

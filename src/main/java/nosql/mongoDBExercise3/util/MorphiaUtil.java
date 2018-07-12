@@ -7,9 +7,9 @@ import org.mongodb.morphia.Morphia;
 
 public class MorphiaUtil {
     
-    private final MongoClientURI mongoURI = new MongoClientURI("mongodb://localhost:27017");
+    private final MongoClientURI mongoURI = new MongoClientURI("..");
     private final Morphia morphia = new Morphia();
-    private final Datastore datastore = morphia.mapPackage("nosql.mongoDBExercise2").createDatastore(new MongoClient(mongoURI), "exercise3");
+    private final Datastore datastore = morphia.mapPackage("nosql.mongoDBExercise3.model").createDatastore(new MongoClient(mongoURI), "exercise3");
     
     
     //constructor start- double checked lazy initialization for multi-threading

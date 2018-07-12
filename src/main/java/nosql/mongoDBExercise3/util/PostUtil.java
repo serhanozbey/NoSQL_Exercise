@@ -1,12 +1,11 @@
 package nosql.mongoDBExercise3.util;
 
 import com.mongodb.DBObject;
-import nosql.mongoDBExercise3.PostComments;
-import nosql.mongoDBExercise3.UserPost;
 import nosql.mongoDBExercise3.model.Post;
+import nosql.mongoDBExercise3.model.PostComments;
 import nosql.mongoDBExercise3.model.User;
+import nosql.mongoDBExercise3.model.UserPost;
 import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
@@ -16,32 +15,17 @@ public class PostUtil {
     
     //POST
     
-    //TODO: To be removed, this should be done within PostDao- savePost.
-    public static void saveUserPost(User user, Post post) {
-        Datastore datastore = MorphiaUtil.getInstance().getDatastore();
-    Query<UserPost> currentUserPost = datastore.find(UserPost.class, "_id", user.id).disableValidation();
-        //creating with checking if theres already posts of that user existing
-        UserPost userPost;
-        if (currentUserPost.get() != null) {
-            userPost = currentUserPost.get();
-        } else {
-            userPost = new UserPost(post);
-        }
-        
-        userPost.addPost(post);
-        UpdateOperations ops = datastore
-                .createUpdateOperations(UserPost.class)
-                .addToSet("posts", post);
-        datastore.update(currentUserPost, ops, true);
-    }
-    
     public static Post savePost(User user) {
         Datastore datastore = MorphiaUtil.getInstance().getDatastore();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter post");
         Post post = new Post(user, scanner.nextLine());
         datastore.save(post);
-        saveUserPost(user, post);
+        //add or update to user-posts
+        UpdateOperations<UserPost> ops = datastore
+                .createUpdateOperations(UserPost.class)
+                .addToSet("posts", post);
+        datastore.update(datastore.find(UserPost.class), ops, true);
         return post;
     }
     

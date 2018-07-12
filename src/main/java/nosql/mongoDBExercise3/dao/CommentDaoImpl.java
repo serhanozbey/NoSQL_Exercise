@@ -5,7 +5,7 @@ import nosql.mongoDBExercise3.model.Comment;
 import java.util.List;
 
 public class CommentDaoImpl implements CommentDao {
-    //TODO: This dao saves each comments to following places:
+    //This dao saves each comments to following places:
     //postComments
     //userComments
     

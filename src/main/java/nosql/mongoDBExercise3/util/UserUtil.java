@@ -17,6 +17,7 @@ public class UserUtil {
         System.out.println("\nEnter username");
         String username = scanner.nextLine();
         System.out.println("Enter password");
+        //TODO: Following to be added for production, as intellij starts Java from javaw instead javac: String password = new String(console.readPassword("password: "));
         String password = scanner.nextLine();
         if (userValidation(username,password)) {
             return new UserDaoImpl().get(username);

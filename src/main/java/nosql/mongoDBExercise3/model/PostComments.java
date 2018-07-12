@@ -1,7 +1,5 @@
-package nosql.mongoDBExercise3;
+package nosql.mongoDBExercise3.model;
 
-import nosql.mongoDBExercise3.model.Comment;
-import nosql.mongoDBExercise3.model.Post;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Entity(value = "post-comments",noClassnameStored = true)
 public class PostComments {
-//TODO: To be removed
     @Id
     private ObjectId postId;
     private String postBody;

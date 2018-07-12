@@ -1,7 +1,6 @@
 package nosql.mongoDBExercise3.commands;
 
 import nosql.mongoDBExercise3.util.PostUtil;
-import nosql.mongoDBExercise3.util.UserUtil;
 
 public class ViewPosts implements View {
     

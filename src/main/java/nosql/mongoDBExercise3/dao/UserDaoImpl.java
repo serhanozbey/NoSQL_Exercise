@@ -1,7 +1,7 @@
 package nosql.mongoDBExercise3.dao;
 
-import nosql.mongoDBExercise3.util.MorphiaUtil;
 import nosql.mongoDBExercise3.model.User;
+import nosql.mongoDBExercise3.util.MorphiaUtil;
 import org.mongodb.morphia.Datastore;
 
 public class UserDaoImpl implements UserDao {

@@ -1,6 +1,6 @@
 1.0.0 CLI User - Post - Comment - mongoDB
 
--New repository for mongoDBExercise3
+-New repository for nosql.mongoDBExercise3
 
 -Recreating Dao interface and implementations- UserDao, PostDao, CommentDao
 
@@ -14,3 +14,7 @@
 -Added Util classes, but should be changed to something else. (like commands)
 
 -TODO: Create login date dumps of logins to database.
+
+- Restructured all models. Works perfectly.
+
+- Added unit tests.

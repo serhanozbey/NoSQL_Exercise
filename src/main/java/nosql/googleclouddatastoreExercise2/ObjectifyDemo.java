@@ -1,4 +1,4 @@
-package nosql.objectify_example;
+package nosql.googleclouddatastoreExercise2;
 
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.datastore.*;
@@ -6,7 +6,6 @@ import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

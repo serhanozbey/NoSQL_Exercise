@@ -1,7 +1,6 @@
 package nosql.mongoDBExercise3.commands;
 
 import nosql.mongoDBExercise3.controller.Main;
-import nosql.mongoDBExercise3.model.Comment;
 import nosql.mongoDBExercise3.model.Post;
 import nosql.mongoDBExercise3.util.CommentUtil;
 import nosql.mongoDBExercise3.util.MorphiaUtil;
