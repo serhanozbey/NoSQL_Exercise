@@ -27,6 +27,10 @@ public class FirebaseServer {
     
     //todo: write better tests. test connections and if things are retrieved in order.
     
+    //TODO: Replace the tests as following:
+        //TODO: make DB CRUD methods like DAO
+        //TODO: write tests that writes and expects the same with a query to DB.
+    
     private static Firestore mFirestore;
     private static UserRecord mUser;
     
@@ -199,6 +203,7 @@ A failed transaction returns an error and does not write anything to the databas
     
     //READ AN OBJECT IN COLLECTION
     public static void batchedWriteQuery() throws ExecutionException, InterruptedException {
+        //TODO: to be removed and replaced with a test called, query if batched write is written as expected.
         System.out.println("Querying data with name value");
         CollectionReference docRef = mFirestore.collection("batchedExercise1");
         Query q = docRef.whereEqualTo("name", "serhan").limit(1);
