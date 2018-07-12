@@ -158,6 +158,7 @@ A failed transaction returns an error and does not write anything to the databas
         transaction2.get();
     }
     
+    
     //SECTION: BATCHED WRITE
     
     /*If you do not need to read any documents in your operation set, you can execute multiple write operations as a single batch that contains any combination of set(), update(), or delete() operations. A batch of writes completes atomically and can write to multiple documents.*/

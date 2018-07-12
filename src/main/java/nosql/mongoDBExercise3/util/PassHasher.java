@@ -1,5 +1,6 @@
 package nosql.mongoDBExercise3.util;
 
+import nosql.firebase_admin.FirebaseServer;
 import org.mindrot.jbcrypt.BCrypt;
 //https://www.mindrot.org/projects/jBCrypt/
 
@@ -16,7 +17,6 @@ public class PassHasher {
     /*The bcrypt function is the default password hash algorithm for BSD and other systems including some Linux distributions such as SUSE Linux.[2] The prefix "$2a$" or "$2b$" (or "$2y$") in a hash string in a shadow password file indicates that hash string is a bcrypt hash in modular crypt format.[3] The rest of the hash string includes the cost parameter, a 128-bit salt (base-64 encoded as 22 characters), and 184 bits of the resulting hash value (base-64 encoded as 31 characters).[4] The cost parameter specifies a key expansion iteration count as a power of two, which is an input to the crypt algorithm.
 
 For example, the shadow password record $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy specifies a cost parameter of 10, indicating 210 key expansion rounds. The salt is N9qo8uLOickgx2ZMRZoMye and the resulting hash is IjZAgcfl7p92ldGxad68LJZdL17lhWy. Per standard practice, the user's password itself is not stored.*/
-    
     
     /*Define the BCrypt workload to use when generating password hashes. 10-31 is a valid value.*/
     private static int workload = 12;
