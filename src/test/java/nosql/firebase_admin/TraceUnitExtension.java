@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TraceUnitExtension implements AfterEachCallback, BeforeEachCallback {
-    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+    private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
     
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -19,7 +19,7 @@ public class TraceUnitExtension implements AfterEachCallback, BeforeEachCallback
     
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        System.out.println("ENDING METHOD: "+context.getDisplayName()+" -TIME: "+  dateFormat.format(new Date())+ "\n");
+        System.out.println("\nENDING METHOD: "+context.getDisplayName()+" -TIME: "+  dateFormat.format(new Date())+ "\n");
     }
     
     

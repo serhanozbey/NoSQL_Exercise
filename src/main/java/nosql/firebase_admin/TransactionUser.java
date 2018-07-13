@@ -6,6 +6,7 @@ import com.google.cloud.firestore.annotation.IgnoreExtraProperties;
 import java.time.Instant;
 import java.util.Objects;
 
+
 @IgnoreExtraProperties
 public class TransactionUser {
     
@@ -13,8 +14,6 @@ public class TransactionUser {
     private String createdAt;
     private String name;
     private String email;
-    private int counter;
-    
     
     public TransactionUser() {
     }
@@ -22,7 +21,6 @@ public class TransactionUser {
     public TransactionUser(String name, String email) {
         this.name = name;
         this.email = email;
-        counter = 1;
         createdAt = String.valueOf(Instant.now());
     }
     
@@ -42,18 +40,11 @@ public class TransactionUser {
         this.email = email;
     }
     
-    public int getCounter() {
-        return counter;
-    }
-    
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
-    
     @Override
     public String toString() {
         return "TransactionUser{" +
                 "name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
     

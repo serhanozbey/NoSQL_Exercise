@@ -1,17 +1,10 @@
 package nosql.firebase_admin;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.launcher.TestExecutionListener;
-import org.junit.platform.launcher.TestIdentifier;
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 
-import java.util.Calendar;
+import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,10 +14,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class FirebaseServerTest {
     
     
+    private final String NAME = "serhan";
+    private final String EMAIL = "serhan@serhan.com";
+    //first 3 exercises
+    private final static String SINGLE_DOC_PATH = "single_document";
+    private final static String TRANSACTIONS_PATH = "transactions";
+    private final static String BATCHED_WRITE_PATH = "batched_write";
+    private final static String[] collections = new String[]{SINGLE_DOC_PATH, TRANSACTIONS_PATH, BATCHED_WRITE_PATH};
+    
     //DB test
     @BeforeAll
-    static void beforeAll(){
-        System.out.println(Calendar.DATE);
+    static void beforeAll() {
+        System.out.println("TEST STARTS: " + Instant.now());
         try {
             FirebaseServer.setup("..");
         } catch (Exception e) {
@@ -32,39 +33,39 @@ class FirebaseServerTest {
         }
     }
     
-    @BeforeEach
-    void setUp() {
-        //
-    }
-    
+    //SECTION1: BASIC READ AND WRITE OPERATIONS
     @Test
-    void readSingleDocument() throws ExecutionException, InterruptedException {
-        FirebaseServer.readSingleDocument();
+    void writeReadDeleteSingleDocument() throws ExecutionException, InterruptedException {
+        FirebaseServer.writeSingleDocument(NAME, EMAIL,SINGLE_DOC_PATH);
+        //readSingleDocument
+        assertEquals(new TransactionUser(NAME, EMAIL), FirebaseServer.readSingleDocumentObject(NAME, EMAIL,SINGLE_DOC_PATH));
+        //deleteSingleDocument
+        FirebaseServer.deleteSingleDocument(NAME,SINGLE_DOC_PATH);
     }
     
     @Test
     void readCollectionDocuments() throws FirebaseAuthException, InterruptedException, ExecutionException {
-        FirebaseServer.readCollectionDocuments();
+        FirebaseServer.readCollectionDocuments("posts");
     }
-    
+    //SECTION2: TRANSACTIONS
     @Test
     void transactionField() throws ExecutionException, InterruptedException {
-        FirebaseServer.transactionField();
+        FirebaseServer.transactionField(TRANSACTIONS_PATH);
     }
     
     @Test
     void transactionObject() throws ExecutionException, InterruptedException {
-        FirebaseServer.transactionObject();
+        FirebaseServer.transactionObject(TRANSACTIONS_PATH);
     }
-    
+    //SECTION3: BATCHED WRITES
     @Test
     void batchedWrites() throws ExecutionException, InterruptedException {
-        FirebaseServer.batchedWrites();
+        FirebaseServer.batchedWrites(BATCHED_WRITE_PATH);
     }
     
     @Test
     void batchedWriteQuery() throws ExecutionException, InterruptedException {
-        FirebaseServer.batchedWriteQuery();
+        FirebaseServer.batchedWriteQuery(BATCHED_WRITE_PATH);
     }
     
     @Test
@@ -72,5 +73,9 @@ class FirebaseServerTest {
         FirebaseServer.batchedWriteUpdates();
     }
     
-    
+    //removing all writes to database after tests.
+    @AfterAll
+    static void finish() throws ExecutionException, InterruptedException {
+        //for(String path:collections) FirebaseServer.deleteCollection(path,2);
+    }
 }
