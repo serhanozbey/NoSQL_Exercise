@@ -23,8 +23,9 @@ public class CommentUtil {
         UpdateOperations<PostComments> ops2 = datastore
                 .createUpdateOperations(PostComments.class)
                 .addToSet("comments", comment);
-        datastore.update(datastore.find(PostComments.class), ops2, true);
-        
+        datastore.update(datastore.find(PostComments.class).filter("_id",post.getId()), ops2, true);
+    
+    
         System.out.println("Comment saved successfully.\n");
     }
     

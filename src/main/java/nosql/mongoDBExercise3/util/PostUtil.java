@@ -25,7 +25,7 @@ public class PostUtil {
         UpdateOperations<UserPost> ops = datastore
                 .createUpdateOperations(UserPost.class)
                 .addToSet("posts", post);
-        datastore.update(datastore.find(UserPost.class), ops, true);
+        datastore.update(datastore.find(UserPost.class).filter("_id",user.id), ops, true);
         return post;
     }
     
