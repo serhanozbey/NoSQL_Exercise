@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.jupiter.api.Assertions.*;
 
 //http://www.baeldung.com/junit-5-migration
+//https://dzone.com/articles/testing-databases-junit-and
 @ExtendWith(TraceUnitExtension.class)
 class FirebaseServerTest {
     
